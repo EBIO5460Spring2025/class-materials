@@ -94,15 +94,25 @@ A text heavily influencing the way I think about the broader topic of data scien
 Paperback versions of just about any Springer text can be purchased by University of Colorado students for $25 each. To purchase, do a Chinook search via the CU library (you must be on the campus network or via VPN, not the guest wifi), follow the link to the ebook version, and look for the Springer offer to buy the paperback version. Be aware however that these versions are not in color, which is certainly an issue for interpreting plots!
 
 #### Grading & assessment scheme
+Grading is for completion
+
 Assignments **35%**
 
+* Assignment 1: 7%
+* Assignment 2: 7%
+* Assignment 3: 7%
+* Assignment 4: 14%
+
 Discussion papers (written reflection and participation) **20%**
+
+* Roughly 10 discussions, each 2%
 
 Present and lead discussion of a contemporary paper **10%**
 
 Individual assignment **35%**
 
-* Exam week presentation 15%, submitted work 20%
+* Exam week presentation 15%
+* Submitted work 20%
 * Choose between a data project or a literature synthesis project
 
 #### Exams
