@@ -12,6 +12,7 @@ Pronouns: he, him, his
 * **Zoom: 995 5569 4569**, as needed and for office hours
 * Text: [James et al. 2021](https://www.statlearning.com/) (2023 corrected version; both R and Python editions)
 * [Google Drive](https://drive.google.com/drive/folders/1T2FjEn5FohvDc7SvfO2JBZ-4QndGyneG?usp=sharing): anything not open access, audio and zoom recording links, collaborative notes etc
+* [Class recordings](https://www.dropbox.com/scl/fo/sc8rs4c1jtjlnivmzng3f/ADyhgSVA6XxmXL1vgJw1Q3s?rlkey=irl3h3qhqxvnewpcuhsoffqpx&st=ni6xn75g&dl=0): password required, by request
 * [Piazza](https://piazza.com/colorado/spring2025/ebio5460015/home): help, questions, discussion
 * [Zotero library](https://www.zotero.org/groups/5444970/machine_learning_ecology_2024/library): collection of papers
 
