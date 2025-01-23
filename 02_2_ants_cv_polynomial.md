@@ -43,8 +43,46 @@ forest_ants |>
 
 ![](02_2_ants_cv_polynomial_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
 
-Here is one way we could code a 3rd order polynomial using R’s model
-formula syntax.
+Here’s one way we could code a 3rd order polynomial by first creating
+new variables for the squared (quadratic) and cubed (cubic) terms, and
+using R’s model formula syntax to train the model by minimizing the SSQ
+with the function `lm`.
+
+``` r
+forest_ants$latitude_2 <- forest_ants$latitude ^ 2
+forest_ants$latitude_3 <- forest_ants$latitude ^ 3
+head(forest_ants)
+```
+
+    ##   site habitat latitude elevation richness latitude_2 latitude_3
+    ## 1  TPB  forest    41.97       389        6   1761.481   73929.35
+    ## 2  HBC  forest    42.00         8       16   1764.000   74088.00
+    ## 3  CKB  forest    42.03       152       18   1766.521   74246.87
+    ## 4  SKP  forest    42.05         1       17   1768.202   74352.92
+    ## 5   CB  forest    42.05       210        9   1768.202   74352.92
+    ## 6   RP  forest    42.17        78       15   1778.309   74991.29
+
+``` r
+lm(richness ~ latitude + latitude_2 + latitude_3, data=forest_ants)
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = richness ~ latitude + latitude_2 + latitude_3, data = forest_ants)
+    ## 
+    ## Coefficients:
+    ## (Intercept)     latitude   latitude_2   latitude_3  
+    ##  84336.3595   -5736.2100     130.0406      -0.9825
+
+A model formula provides a shorthand notation for (mostly) linear
+models, e.g. `y ~ x + z` is shorthand for the model:
+
+$$
+y = \beta_0 + \beta_1 x + \beta_2 z
+$$
+
+Here’s another way to code the same model that eliminates the need to
+create new variables for higher order terms.
 
 ``` r
 lm(richness ~ latitude + I(latitude^2) + I(latitude^3), data=forest_ants)
@@ -60,40 +98,169 @@ lm(richness ~ latitude + I(latitude^2) + I(latitude^3), data=forest_ants)
     ##    84336.3595     -5736.2100       130.0406        -0.9825
 
 The `I()` function ensures that `^` is not interpreted as model formula
-syntax. See `?formula` for more details. Briefly, model formulae provide
-a shorthand notation for (mostly) linear models, e.g. `y ~ x + z` is
-shorthand for the model:
-
-$$
-y = \beta_0 + \beta_1 x + \beta_2 z
-$$
-
-A more convenient way is the function `poly()`
+syntax. See `?formula` for more details about model formulae. An even
+more convenient way uses the function `poly()`, which creates a matrix
+of the polynomial terms.
 
 ``` r
-lm(richness ~ poly(latitude, degree=3), data=forest_ants)
+poly(forest_ants$latitude, degree=3, raw=TRUE)
+```
+
+    ##           1        2        3
+    ##  [1,] 41.97 1761.481 73929.35
+    ##  [2,] 42.00 1764.000 74088.00
+    ##  [3,] 42.03 1766.521 74246.87
+    ##  [4,] 42.05 1768.202 74352.92
+    ##  [5,] 42.05 1768.202 74352.92
+    ##  [6,] 42.17 1778.309 74991.29
+    ##  [7,] 42.19 1779.996 75098.04
+    ##  [8,] 42.23 1783.373 75311.84
+    ##  [9,] 42.27 1786.753 75526.05
+    ## [10,] 42.31 1790.136 75740.66
+    ## [11,] 42.56 1811.354 77091.21
+    ## [12,] 42.57 1812.205 77145.56
+    ## [13,] 42.58 1813.056 77199.94
+    ## [14,] 42.69 1822.436 77799.80
+    ## [15,] 43.33 1877.489 81351.59
+    ## [16,] 44.06 1941.284 85532.96
+    ## [17,] 44.29 1961.604 86879.45
+    ## [18,] 44.33 1965.149 87115.05
+    ## [19,] 44.50 1980.250 88121.12
+    ## [20,] 44.55 1984.702 88418.50
+    ## [21,] 44.76 2003.458 89674.76
+    ## [22,] 44.95 2020.503 90821.59
+    ## attr(,"degree")
+    ## [1] 1 2 3
+    ## attr(,"class")
+    ## [1] "poly"   "matrix"
+
+We can use this directly within a model formula
+
+``` r
+lm(richness ~ poly(latitude, degree=3, raw=TRUE), data=forest_ants)
 ```
 
     ## 
     ## Call:
-    ## lm(formula = richness ~ poly(latitude, degree = 3), data = forest_ants)
+    ## lm(formula = richness ~ poly(latitude, degree = 3, raw = TRUE), 
+    ##     data = forest_ants)
     ## 
     ## Coefficients:
-    ##                 (Intercept)  poly(latitude, degree = 3)1  
-    ##                       9.182                      -11.604  
-    ## poly(latitude, degree = 3)2  poly(latitude, degree = 3)3  
-    ##                       6.170                       -2.629
+    ##                             (Intercept)  
+    ##                              84336.3595  
+    ## poly(latitude, degree = 3, raw = TRUE)1  
+    ##                              -5736.2100  
+    ## poly(latitude, degree = 3, raw = TRUE)2  
+    ##                                130.0406  
+    ## poly(latitude, degree = 3, raw = TRUE)3  
+    ##                                 -0.9825
 
-The difference in the parameter estimates from the previous approach is
-because the parameterization is different. Use the argument `raw=TRUE`
-for the same parameterization (see `?poly`). In machine learning we
-don’t care about the parameter values, just the resulting prediction,
-which is exactly the same for the two approaches. R’s `lm()` function
-contains a **training** **algorithm** that finds the parameters that
-minimize the sum of squared deviations of the data from the model.
+A potential problem with polynomial models is that the higher order
+terms can become almost perfectly correlated with one another, leading
+to models where the parameters can’t all be uniquely estimated. For
+example, for these data the fourth order polynomial can be trained but
+the fifth order polynomial can’t determine a unique value for the
+highest order parameter, and the parameter estimates remain the same as
+the fourth order model.
+
+``` r
+lm(richness ~ poly(latitude, degree=4, raw=TRUE), data=forest_ants)
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = richness ~ poly(latitude, degree = 4, raw = TRUE), 
+    ##     data = forest_ants)
+    ## 
+    ## Coefficients:
+    ##                             (Intercept)  
+    ##                              -1.615e+06  
+    ## poly(latitude, degree = 4, raw = TRUE)1  
+    ##                               1.509e+05  
+    ## poly(latitude, degree = 4, raw = TRUE)2  
+    ##                              -5.281e+03  
+    ## poly(latitude, degree = 4, raw = TRUE)3  
+    ##                               8.209e+01  
+    ## poly(latitude, degree = 4, raw = TRUE)4  
+    ##                              -4.781e-01
+
+``` r
+lm(richness ~ poly(latitude, degree=5, raw=TRUE), data=forest_ants)
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = richness ~ poly(latitude, degree = 5, raw = TRUE), 
+    ##     data = forest_ants)
+    ## 
+    ## Coefficients:
+    ##                             (Intercept)  
+    ##                              -1.615e+06  
+    ## poly(latitude, degree = 5, raw = TRUE)1  
+    ##                               1.509e+05  
+    ## poly(latitude, degree = 5, raw = TRUE)2  
+    ##                              -5.281e+03  
+    ## poly(latitude, degree = 5, raw = TRUE)3  
+    ##                               8.209e+01  
+    ## poly(latitude, degree = 5, raw = TRUE)4  
+    ##                              -4.781e-01  
+    ## poly(latitude, degree = 5, raw = TRUE)5  
+    ##                                      NA
+
+``` r
+cor(poly(forest_ants$latitude, degree=5, raw=TRUE))
+```
+
+    ##           1         2         3         4         5
+    ## 1 1.0000000 0.9999785 0.9999141 0.9998067 0.9996564
+    ## 2 0.9999785 1.0000000 0.9999785 0.9999141 0.9998067
+    ## 3 0.9999141 0.9999785 1.0000000 0.9999785 0.9999141
+    ## 4 0.9998067 0.9999141 0.9999785 1.0000000 0.9999785
+    ## 5 0.9996564 0.9998067 0.9999141 0.9999785 1.0000000
+
+This problem can be markedly reduced by using orthogonal polynomials,
+which reduce the correlation among the polynomial terms. Orthogonal
+polynomials are the default type for `poly()`.
+
+``` r
+lm(richness ~ poly(latitude, degree=5), data=forest_ants)
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = richness ~ poly(latitude, degree = 5), data = forest_ants)
+    ## 
+    ## Coefficients:
+    ##                 (Intercept)  poly(latitude, degree = 5)1  
+    ##                      9.1818                     -11.6039  
+    ## poly(latitude, degree = 5)2  poly(latitude, degree = 5)3  
+    ##                      6.1704                      -2.6291  
+    ## poly(latitude, degree = 5)4  poly(latitude, degree = 5)5  
+    ##                     -0.8511                       2.7290
+
+``` r
+cor(poly(forest_ants$latitude, degree=5))
+```
+
+    ##               1             2            3             4             5
+    ## 1  1.000000e+00 -4.567202e-18 9.958397e-17 -1.168363e-16  2.687466e-17
+    ## 2 -4.567202e-18  1.000000e+00 1.086913e-17  1.630369e-17 -5.149960e-19
+    ## 3  9.958397e-17  1.086913e-17 1.000000e+00  4.305638e-17  6.166400e-18
+    ## 4 -1.168363e-16  1.630369e-17 4.305638e-17  1.000000e+00 -1.918360e-17
+    ## 5  2.687466e-17 -5.149960e-19 6.166400e-18 -1.918360e-17  1.000000e+00
+
+Orthogonal polynomials give the same predictions as the raw polynomials.
+It is just a difference in parameterization of the same model. In
+machine learning we don’t care about the parameter values, just the
+resulting prediction, so it’s best to choose the more robust
+parameterization. R’s `lm()` function contains a **training algorithm**
+that finds the parameters that minimize the sum of squared deviations of
+the data from the model.
 
 Example plot of an order 4 polynomial model. Use this block of code to
-try different values for the order (syn. degree) of the polynomial.
+try different values for the order (syn. degree) of the polynomial. We
+can get up to order 16, after which we can no longer form orthogonal
+polynomials.
 
 ``` r
 order <- 4 #integer
@@ -111,7 +278,7 @@ forest_ants |>
     labs(title=paste("Polynomial order", order))
 ```
 
-![](02_2_ants_cv_polynomial_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+![](02_2_ants_cv_polynomial_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
 
 Using `predict` to ask for predictions from the trained polynomial
 model. For example, here we are asking for the prediction at latitude
@@ -150,13 +317,13 @@ labels that says which partition each data point belongs to.
 random_partitions(nrow(forest_ants), k=5)
 ```
 
-    ##  [1] 2 1 5 2 1 1 5 1 2 5 4 5 4 2 3 2 4 3 3 4 3 1
+    ##  [1] 4 5 4 2 1 1 2 1 2 2 3 3 5 4 4 1 1 3 5 2 5 3
 
 ``` r
 random_partitions(nrow(forest_ants), k=nrow(forest_ants))
 ```
 
-    ##  [1] 21 15  4  1 12 10  3  5 16  6  2 13 14  8  9 17 11  7 18 22 19 20
+    ##  [1] 17  9  7 13  1 22 18  6  5 20 12 14 11 16 10 15  4 19 21  2  8  3
 
 Now code up the k-fold CV algorithm to estimate the prediction mean
 squared error for one order of the polynomial. Try 5-fold, 10-fold, and
