@@ -6,14 +6,14 @@ Below are assignment due dates and a record of the topics we covered each week t
 
 
 ## Assignment due dates
-| Assignment                                          | Due  |
-| --------------------------------------------------- | ---- |
-| 1 (LOOCV)                                           | TBA  |
-| 2 (classification, KNN)                             | TBA  |
-| 3 (decision trees, bagging)                         | TBA  |
-| 4 (boosting and neural networks)                    | TBA  |
-| Individual project presentations (finals week, TBA) | TBA  |
-| Individual project code or paper                    | TBA  |
+| Assignment                                          | Due    |
+| --------------------------------------------------- | ------ |
+| 1 (LOOCV)                                           | 31 Jan |
+| 2 (classification, KNN)                             | 13 Feb |
+| 3 (decision trees, bagging)                         | 25 Feb |
+| 4 (boosting and neural networks)                    | TBA    |
+| Individual project presentations (finals week, TBA) | TBA    |
+| Individual project code or paper                    | TBA    |
 
 
 
