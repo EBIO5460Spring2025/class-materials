@@ -18,7 +18,7 @@
 
 Coding algorithms gives you much deeper understanding for how they work, provides detailed knowledge of what they are actually doing, and builds intuition that you can draw on throughout your career.
 
-We can use the CV algorithm that we coded in class to do LOOCV by setting k equal to the number of data points. But LOOCV is a special case that suggests an even simpler algorithm. Code up the LOOCV algorithm in R or Python from the following pseudocode (literally translate the pseudocode line by line).
+We can use the CV algorithm that we coded in class to do LOOCV by setting k equal to the number of data points. But LOOCV is a special case that suggests an even simpler algorithm. This algorithm **does not need** the function `random_partitions()`. Code up the LOOCV algorithm in R or Python from the following pseudocode (literally translate the pseudocode line by line).
 
 ```
 # LOOCV algorithm
