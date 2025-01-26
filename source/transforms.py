@@ -121,7 +121,17 @@ class Poly(TransformerMixin, BaseEstimator):
 
         X_orig = X
         
-        X = np.squeeze(np.asarray(X).astype(float).copy())
+        # Fix array dimension error. The following removes all dimensions when
+        # there is only one data point to predict
+        #X = np.squeeze(np.asarray(X).astype(float).copy())
+        X = np.asarray(X).astype(float).copy()
+        if (np.ndim(X) == 0) and (X.size == 1):
+            X = X.reshape(1)
+        elif (np.ndim(X) == 1) and (X.size == 1):
+            pass
+        else:
+            X = np.squeeze(X)
+
         n = X.shape[0]
         if X.reshape(-1).shape[0] != n:
             raise ValueError('expecting a single column feature')
