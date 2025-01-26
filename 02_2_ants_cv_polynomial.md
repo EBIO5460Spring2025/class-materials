@@ -270,10 +270,9 @@ nd <- data.frame(latitude=grid_latitude)
 pred_richness <- predict(poly_trained, newdata=nd)
 preds <- cbind(nd, richness=pred_richness)
 
-forest_ants |>
-    ggplot() +
-    geom_point(aes(x=latitude, y=richness)) +
-    geom_line(data=preds, aes(x=latitude, y=richness)) +
+ggplot(data=NULL, aes(x=latitude, y=richness)) +
+    geom_point(data=forest_ants) +
+    geom_line(data=preds) +
     coord_cartesian(ylim=c(0,20)) +
     labs(title=paste("Polynomial order", order))
 ```
@@ -319,13 +318,13 @@ labels that says which partition each data point belongs to.
 random_partitions(nrow(forest_ants), k=5)
 ```
 
-    ##  [1] 5 3 4 1 2 3 4 5 1 2 3 5 2 1 3 2 4 2 5 4 1 1
+    ##  [1] 3 5 3 4 4 1 1 4 2 4 3 3 2 2 5 1 5 2 2 5 1 1
 
 ``` r
 random_partitions(nrow(forest_ants), k=nrow(forest_ants))
 ```
 
-    ##  [1]  5  6 16  3 14 15 20  2  8 21  9  1 17 13 12 22  7 10 11 18  4 19
+    ##  [1] 18  9  5 15 20  6 17 19 10  8  2 21  3  1 11 16 14  4 12 22 13  7
 
 Now code up the k-fold CV algorithm (from our pseudocode to R code) to
 estimate the prediction mean squared error for one order of the
@@ -360,7 +359,7 @@ cv_error <- mean(e)
 cv_error
 ```
 
-    ## [1] 12.40754
+    ## [1] 13.32014
 
 To help us do systematic experiments to explore different combinations
 of `order` and `k` we’ll encapsulate the above code as a function.
@@ -393,7 +392,7 @@ Test the function
 cv_poly_ants(forest_ants, k=10, order=4)
 ```
 
-    ## [1] 15.92233
+    ## [1] 13.01531
 
 ``` r
 cv_poly_ants(forest_ants, k=22, order=4)
@@ -420,31 +419,31 @@ for ( k in c(5, 10, 22 ) ) {
 output
 ```
 
-    ##        k order   cv_error
-    ##  [1,]  5     1   13.23275
-    ##  [2,]  5     2   11.57892
-    ##  [3,]  5     3   13.94890
-    ##  [4,]  5     4   20.51340
-    ##  [5,]  5     5   22.98748
-    ##  [6,]  5     6   19.16095
-    ##  [7,]  5     7   33.41420
-    ##  [8,]  5     8   37.11214
-    ##  [9,] 10     1   13.42902
-    ## [10,] 10     2   11.76577
-    ## [11,] 10     3   12.07746
-    ## [12,] 10     4   16.17592
-    ## [13,] 10     5   18.11770
-    ## [14,] 10     6   19.47130
-    ## [15,] 10     7   25.11469
-    ## [16,] 10     8 5601.48520
-    ## [17,] 22     1   13.63068
-    ## [18,] 22     2   12.87801
-    ## [19,] 22     3   13.54701
-    ## [20,] 22     4   15.51312
-    ## [21,] 22     5   18.82428
-    ## [22,] 22     6   17.59199
-    ## [23,] 22     7   20.63740
-    ## [24,] 22     8  166.56106
+    ##        k order  cv_error
+    ##  [1,]  5     1  12.95532
+    ##  [2,]  5     2  13.52763
+    ##  [3,]  5     3  16.66379
+    ##  [4,]  5     4  13.93091
+    ##  [5,]  5     5  20.59013
+    ##  [6,]  5     6  26.50986
+    ##  [7,]  5     7  22.22612
+    ##  [8,]  5     8 216.54122
+    ##  [9,] 10     1  12.72321
+    ## [10,] 10     2  13.94885
+    ## [11,] 10     3  13.83394
+    ## [12,] 10     4  16.13077
+    ## [13,] 10     5  17.98336
+    ## [14,] 10     6  18.48628
+    ## [15,] 10     7  23.12144
+    ## [16,] 10     8 178.22899
+    ## [17,] 22     1  13.63068
+    ## [18,] 22     2  12.87801
+    ## [19,] 22     3  13.54701
+    ## [20,] 22     4  15.51312
+    ## [21,] 22     5  18.82428
+    ## [22,] 22     6  17.59199
+    ## [23,] 22     7  20.63740
+    ## [24,] 22     8 166.56106
 
 But a neater and easier solution uses the `expand.grid()` function.
 We’ll also set a random seed so that the result is repeatable.
@@ -593,7 +592,7 @@ loocv <- result1 |>
 result2 |>
     select(k, order, mean_cv) |>
     rename(cv_error=mean_cv) |>
-    bind_rows(loocv) |> 
+    bind_rows(loocv) |>
     ggplot() +
     geom_line(aes(x=order, y=cv_error, col=factor(k))) +
     labs(title=paste("Mean across",reps,"k-fold CV runs"), col="k") +

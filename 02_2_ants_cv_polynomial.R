@@ -106,10 +106,9 @@ nd <- data.frame(latitude=grid_latitude)
 pred_richness <- predict(poly_trained, newdata=nd)
 preds <- cbind(nd, richness=pred_richness)
 
-forest_ants |>
-    ggplot() +
-    geom_point(aes(x=latitude, y=richness)) +
-    geom_line(data=preds, aes(x=latitude, y=richness)) +
+ggplot(data=NULL, aes(x=latitude, y=richness)) +
+    geom_point(data=forest_ants) +
+    geom_line(data=preds) +
     coord_cartesian(ylim=c(0,20)) +
     labs(title=paste("Polynomial order", order))
 
@@ -316,7 +315,7 @@ loocv <- result1 |>
 result2 |>
     select(k, order, mean_cv) |>
     rename(cv_error=mean_cv) |>
-    bind_rows(loocv) |> 
+    bind_rows(loocv) |>
     ggplot() +
     geom_line(aes(x=order, y=cv_error, col=factor(k))) +
     labs(title=paste("Mean across",reps,"k-fold CV runs"), col="k") +
@@ -329,31 +328,3 @@ result2 |>
     rename(cv_error=mean_cv) |>
     bind_rows(loocv) |>
     arrange(k)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
