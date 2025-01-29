@@ -9,6 +9,7 @@ model
 ``` r
 library(ggplot2)
 library(dplyr)
+source("source/random_partitions.R") #Function is now in our custom library
 ```
 
 Forest ant data:
@@ -77,19 +78,6 @@ LOOCV (since it’s a small dataset) LOOCV is deterministic for this
 model.
 
 ``` r
-# Function to divide a data set into random partitions for cross-validation
-# n:       length of dataset (scalar, integer)
-# k:       number of partitions (scalar, integer)
-# return:  partition labels (vector, integer)
-# 
-random_partitions <- function(n, k) {
-    min_n <- floor(n / k)
-    extras <- n - k * min_n
-    labels <- c(rep(1:k, each=min_n),rep(seq_len(extras)))
-    partitions <- sample(labels, n)
-    return(partitions)
-}
-
 # Function to perform k-fold CV for a smoothing spline on ants data
 # k:       number of partitions (scalar, integer)
 # df:      degrees of freedom in smoothing spline (scalar, integer)
@@ -110,10 +98,16 @@ cv_smooth_ants <- function(k, df) {
 }
 ```
 
-Test/use the function (LOOCV mode)
+Test/use the function (in LOOCV mode)
 
 ``` r
-cv_smooth_ants(k=nrow(forest_ants), df=7)
+nrow(forest_ants) #22 data points
+```
+
+    ## [1] 22
+
+``` r
+cv_smooth_ants(k=22, df=7)
 ```
 
     ## [1] 15.18528
