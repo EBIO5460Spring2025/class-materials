@@ -77,13 +77,20 @@ predict(smooth_trained, x=seq(41, 45, by=0.5))
 LOOCV (since it’s a small dataset) LOOCV is deterministic for this
 model.
 
+In writing this function (largely copy and paste from the previous
+example), compared to the previous example, I have also removed
+dependencies on external libraries by replacing the `filter()` function
+from `dplyr` with the base R function `subset()`. Reducing dependencies
+in reusable components of code is good programming practice.
+
 ``` r
 # Function to perform k-fold CV for a smoothing spline on ants data
-# k:       number of partitions (scalar, integer)
-# df:      degrees of freedom in smoothing spline (scalar, integer)
-# return:  CV error as MSE (scalar, numeric)
+# forest_ants: forest ants dataset (dataframe)
+# k:           number of partitions (scalar, integer)
+# df:          degrees of freedom in smoothing spline (scalar, integer)
+# return:      CV error as MSE (scalar, numeric)
 #
-cv_smooth_ants <- function(k, df) {
+cv_smooth_ants <- function(forest_ants, k, df) {
     forest_ants$partition <- random_partitions(nrow(forest_ants), k)
     e <- rep(NA, k)
     for ( i in 1:k ) {
@@ -107,7 +114,7 @@ nrow(forest_ants) #22 data points
     ## [1] 22
 
 ``` r
-cv_smooth_ants(k=22, df=7)
+cv_smooth_ants(forest_ants, k=22, df=7)
 ```
 
     ## [1] 15.18528
@@ -139,7 +146,7 @@ grid
 ``` r
 cv_error <- rep(NA, nrow(grid))
 for ( i in 1:nrow(grid) ) {
-    cv_error[i] <- cv_smooth_ants(grid$k[i], grid$df[i])
+    cv_error[i] <- cv_smooth_ants(forest_ants, grid$k[i], grid$df[i])
 }
 result <- cbind(grid, cv_error)
 ```

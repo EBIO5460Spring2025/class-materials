@@ -124,17 +124,20 @@ forest_ants |>
 
 ![](03_3_ants_cv_knn_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
 
-LOOCV (since it’s a small dataset) LOOCV is deterministic for this
-model. Be careful not to confuse the k’s! There is the k-fold k and the
-KNN k.
+Inference algorithm
+
+We’ll do LOOCV (since it’s a small dataset). LOOCV is deterministic for
+this model. Be careful not to confuse the k’s! There is the k-fold k and
+the KNN k.
 
 ``` r
 # Function to perform k-fold CV for the KNN model algorithm on ants data
+# forest_ants: forest ants dataset (dataframe)
 # k_cv:    number of folds (scalar, integer)
 # k_knn:   number of nearest neighbors to average (scalar, integer)
 # return:  CV error as RMSE (scalar, numeric)
 #
-cv_knn_ants <- function(k_cv, k_knn) {
+cv_knn_ants <- function(forest_ants, k_cv, k_knn) {
     forest_ants$partition <- random_partitions(nrow(forest_ants), k_cv)
     e <- rep(NA, k_cv)
     for ( i in 1:k_cv ) {
@@ -154,7 +157,7 @@ cv_knn_ants <- function(k_cv, k_knn) {
 Test/use the function
 
 ``` r
-cv_knn_ants(k_cv=22, k_knn=7) #LOOCV
+cv_knn_ants(forest_ants, k_cv=22, k_knn=7) #LOOCV
 ```
 
     ## [1] 12.75046
@@ -188,7 +191,7 @@ grid
 cv_error <- rep(NA, nrow(grid))
 set.seed(6363) #For reproducible results
 for ( i in 1:nrow(grid) ) {
-    cv_error[i] <- cv_knn_ants(grid$k_cv[i], grid$k_knn[i])
+    cv_error[i] <- cv_knn_ants(forest_ants, grid$k_cv[i], grid$k_knn[i])
 }
 result1 <- cbind(grid, cv_error)
 ```
@@ -219,7 +222,7 @@ cv_error <- matrix(NA, nrow=nrow(grid), ncol=reps)
 set.seed(7419) #For reproducible results in this text
 for ( j in 1:reps ) {
     for ( i in 1:nrow(grid) ) {
-        cv_error[i,j] <- cv_knn_ants(grid$k_cv[i], grid$k_knn[i])
+        cv_error[i,j] <- cv_knn_ants(forest_ants, grid$k_cv[i], grid$k_knn[i])
     }
     print(j) #monitor
 }
