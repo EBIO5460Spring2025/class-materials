@@ -1,6 +1,7 @@
 # Find the best split of a dataset
 # df:     dataframe with columns x (numeric) and y (numeric)
 # n_min:  min number of points in a partition (scalar, integer)
+#
 best_split <- function(df, n_min) {
     odf <- df[order(df$x),]
     x <- odf$x
