@@ -74,6 +74,7 @@ for ( i in 1:boot_reps ) {
 #   record prediction
     boot_preds[,i] <- predict(boot_train, newdata=grid_data)
 }
+# mean of predictions
 bagged_preds <- rowMeans(boot_preds)
 
 #' Plot in comparison to the single tree predictions
@@ -133,28 +134,22 @@ forest_ants |>
     coord_cartesian(ylim=c(0,20))
 
 #' Now we can check it's predictive accuracy by k-fold CV. We'll use our
-#' functions from previous scripts. But first, a little software engineering. We
-#' can make our CV function more general by putting `data` as an argument so we
-#' have less code to alter as we change data sets. This also means there are no
-#' longer any global variables. Eventually we could work to generalize this
-#' function to accept any model but for now we'll continue editing it in place
-#' to reinforce the various pieces. This explicit approach to the cross
-#' validation code is for learning purposes. In production, you will transition
-#' to using tools that make this step even more convenient, such as those in the
-#' tidy models ecosystem (or scikit-learn in Python).
+#' functions from previous scripts, substituting in the new `bagrt` function.
+#' We'll also add some code for monitoring progress because this is going to
+#' take a bit longer.
 
 # Function to perform k-fold CV for bagged regression tree model on ants data
-# data:    y and x data (data.frame, mixed)
-# k:       number of folds (scalar, integer)
-# monitor: TRUE provides monitoring (logical)
-# return:  CV error as MSE (scalar, numeric)
+# forest_ants:  data (data.frame, numeric)
+# k:            number of partitions (scalar, integer)
+# monitor:      TRUE provides monitoring (logical)
+# return:       CV error as MSE (scalar, numeric)
 #
-cv_ants <- function(data, k, monitor=FALSE) {
-    partition <- random_partitions(nrow(data), k)
+cv_ants <- function(forest_ants, k, monitor=FALSE) {
+    partition <- random_partitions(nrow(forest_ants), k)
     e <- rep(NA, k)
     for ( i in 1:k ) {
-        test_data <- subset(data, partition == i)
-        train_data <- subset(data, partition != i)
+        test_data <- subset(forest_ants, partition == i)
+        train_data <- subset(forest_ants, partition != i)
         pred_richness <- bagrt(richness ~ latitude, 
                                data=train_data, 
                                xnew_data=test_data)
@@ -168,8 +163,8 @@ cv_ants <- function(data, k, monitor=FALSE) {
 #' Test the function (integer sequence is monitoring progress)
 
 #+ cache=TRUE
-cv_ants(data=forest_ants, k=5, monitor=TRUE)
-cv_ants(data=forest_ants, k=nrow(forest_ants), monitor=TRUE) #LOOCV
+cv_ants(forest_ants, k=5, monitor=TRUE)
+cv_ants(forest_ants, k=nrow(forest_ants), monitor=TRUE) #LOOCV
 
 #' Running the above two lines of code multiple times we find that LOOCV is
 #' quite slow but is not too variable (the variance is from stochasticity in the
@@ -178,7 +173,7 @@ cv_ants(data=forest_ants, k=nrow(forest_ants), monitor=TRUE) #LOOCV
 #' As before, we'll need repeated folds for a more stable estimate. However,
 #' this is starting to get computationally intensive because we now have three
 #' resampling approaches stacked on top of each other (bagging, CV, and
-#' replicate random folds). This is a good time to introduce parallel
+#' replicate random partitions). This is a good time to introduce parallel
 #' processing.
 #' 
 
@@ -192,14 +187,14 @@ cv_ants(data=forest_ants, k=nrow(forest_ants), monitor=TRUE) #LOOCV
 reps <- 250
 cv_error <- rep(NA, reps)
 for ( i in 1:reps ) {
-    cv_error[i] <- cv_ants(data=forest_ants, k=5)
+    cv_error[i] <- cv_ants(forest_ants, k=5)
 }
 
 #' The above code runs in serial: iterations of the `for` loop run one after the
 #' other. Our new `cv_ants()` function with the `bagrt()` model/train algorithm
 #' takes a noticeable time to run, which we can measure with `system.time`:
 
-ts <- system.time(cv_ants(data=forest_ants, k=5))
+ts <- system.time(cv_ants(forest_ants, k=5))
 ts
 
 #' So one run of 5-fold CV with `cv_ants` takes about 3-4 seconds on my laptop.
@@ -229,7 +224,7 @@ plan(multisession, workers=8)
 set.seed(4470)
 reps <- 504
 cv_error <- foreach ( 1:reps ) %dorng% {
-    cv_ants(data=forest_ants, k=5)
+    cv_ants(forest_ants, k=5)
 }
 
 #' Use these lines to save or load the results from long jobs:
@@ -299,11 +294,9 @@ sd(cv_error) / sqrt(length(cv_error))
 #' trees, thus causing an abrupt change in the prediction at that point. What
 #' the CV discrepancy seems to tell us is that the bagged regression tree is a
 #' good predictive model in general (according to 5-fold CV) but may have some
-#' issues for this dataset (according to LOOCV). We should perhaps be careful
-#' predicting from the bagged model trained with both of these influential
-#' points present (it might be best to drop one of the points). Prediction from
-#' a small dataset is always dangerous as it is difficult for a small dataset to
-#' be representative enough that it generalizes well.
+#' issues for this dataset (according to LOOCV). Prediction from a small dataset
+#' is always tenuous as it is difficult for a small dataset to be representative
+#' enough to generalize well.
 #' 
 
 #' | Model              |   LOOCV   | 5-fold CV |
@@ -375,12 +368,12 @@ preds |>
 
 #+ eval=FALSE
 # Version of cv_ants with a boot_reps argument
-cv_ants_br <- function(data, k, boot_reps) {
-    partition <- random_partitions(nrow(data), k)
+cv_ants_br <- function(forest_ants, k, boot_reps) {
+    partition <- random_partitions(nrow(forest_ants), k)
     e <- rep(NA, k)
     for ( i in 1:k ) {
-        test_data <- subset(data, partition == i)
-        train_data <- subset(data, partition != i)
+        test_data <- subset(forest_ants, partition == i)
+        train_data <- subset(forest_ants, partition != i)
         pred_richness <- bagrt(richness ~ latitude, 
                                data=train_data, 
                                xnew_data=test_data,
@@ -397,7 +390,7 @@ reps <- 506 #number of CV splits (expected precision +/- 0.07)
 boot_reps <- rep(c(5, seq(10, 90, 10), seq(100, 1000, 100)), each=reps)
 boot_reps <- sample(boot_reps) #shuffled for parallel efficiency
 cv_error_br <- foreach ( b=boot_reps ) %dorng% {
-    cv_ants_br(data=forest_ants, k=5, boot_reps=b)
+    cv_ants_br(forest_ants, k=5, boot_reps=b)
 }
 
 #' Save or load the job
