@@ -57,9 +57,9 @@ willowtit |>
 
 **Q1\.** Based on the code in `classification_knn.R` that we worked through in class:
 
-- [ ] Form predictions (present or absent) for the KNN model for various values of `k_knn` (number of nearest neighbors).
+- [ ] Form predictions (present or absent) for the KNN model for a grid of elevations from min(elev) to max(elev) for various values of `k_knn` (number of nearest neighbors). Explore values of `k_knn` and choose a set of `k_knn` values to visualize next that helps you understand the consequences of changing `k_knn`.
 
-- [ ] Visualize these predictions as a function of elevation in a scatterplot. How might you visualize these? Would you choose to plot them as points? or bars? or ... This requires some thought as the raw predictions are category labels (a character vector).
+- [ ] Visualize these predictions (present or absent) as a function of elevation. How might you visualize these? This requires some thought as the raw predictions are category labels (a character vector). Here's one suggestion: plot elevation on the x axis with predicted category on the y-axis. Jitter the points on the y-axis to separate them out a bit. Put different values of k_knn in different panels. Perhaps you have a better idea! You're welcome to come up with your own visualization.
 
 **Q2.** Make a new function, called `knn_classify2_probs`, by modifying the `knn_classify2` function so that instead of returning a character vector of the predictions, it returns a numeric vector of the probabilities. To do this, you should work through the existing function line-by-line to understand its flow. Hint: the solution is to remove some lines of code. Also, the KNN function predicts the probability of `cat1`, which in this case could be absence, so be sure to include code that returns always (in the general case, not just this dataset) the probability of presence.
 
