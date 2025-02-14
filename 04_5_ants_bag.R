@@ -74,7 +74,7 @@ for ( i in 1:boot_reps ) {
 #   record prediction
     boot_preds[,i] <- predict(boot_train, newdata=grid_data)
 }
-# mean of predictions
+# final prediction = mean of predictions
 bagged_preds <- rowMeans(boot_preds)
 
 #' Plot in comparison to the single tree predictions
