@@ -6,6 +6,13 @@
 
 **Percent of grade:** 7%
 
+**Format for submitting assignments:**
+
+* Submit code and answers to questions as comments in the same script or markdown report.
+* All code and text in one file please (i.e. not a separate file per question).
+* Please include all the produced plots along with your code. I don't want to run your code to make plots!! You may produce a report if you wish (e.g. markdown, html, pdf) but a script file plus plots is sufficient.
+* Please organize your repository with files clearly labelled to indicate belonging to the assignment, or put each assignment in its own directory (folder).
+
 
 
 #### Classification trees and bagging
