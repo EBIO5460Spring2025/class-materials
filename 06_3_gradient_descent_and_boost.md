@@ -1,12 +1,9 @@
 Gradient descent training algorithm
 ================
 Brett Melbourne
-19 Feb 2024
+19 Feb 2024 (update 20 Feb 2025)
 
-Gradient descent illustrated with a simple linear model. This is first
-draft code with a lot of copy-pasted blocks and quick rudimentary plots
-that I used to prepare the lecture. I’ll clean this up by making
-functions for repeated components.
+Gradient descent illustrated with a simple linear model.
 
 ``` r
 library(ggplot2)
@@ -29,7 +26,7 @@ ggplot(data.frame(x, y)) +
     geom_point(aes(x, y))
 ```
 
-![](06_3_gradient_descent_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
+![](06_3_gradient_descent_and_boost_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
 
 What does the MSE cost function look like?
 
@@ -47,9 +44,9 @@ with(mse_grid, plot(b_0, mse, ylim=c(0, 0.4)))
 with(mse_grid, plot(b_1, mse, ylim=c(0, 0.4)))
 ```
 
-![](06_3_gradient_descent_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+![](06_3_gradient_descent_and_boost_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
 
-Looking at just the underside (extracted from output above) PS the
+Looking at just the underside (extracted from output above) The
 underside is the curve for that parameter holding the other at its
 optimum
 
@@ -70,9 +67,9 @@ plot(b_0_vals, mse_b_0, type="l", ylim=c(0, 0.4))
 plot(b_1_vals, mse_b_1, type="l", ylim=c(0, 0.4))
 ```
 
-![](06_3_gradient_descent_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+![](06_3_gradient_descent_and_boost_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
 
-Calculate the gradient of the MSE cost function
+Calculate the gradient of the MSE loss function
 
 ``` r
 b_0 <- -0.5
@@ -83,7 +80,10 @@ db_1 <- -2 * sum(r * x) / n
 db_0 <- -2 * sum(r) / n
 ```
 
-Plot the gradient
+Plot the gradient. The blue curve is the loss function for the parameter
+while holding the other parameter constant. The black curve is the
+global minimum of the loss function over all parameter values. We are
+trying to descend to the basin of the global loss function.
 
 ``` r
 par(mfrow=c(1,2))
@@ -115,7 +115,7 @@ points(b_1, mse, col="red", pch=19)
 abline(mse - db_1 * b_1, db_1, col="red")
 ```
 
-![](06_3_gradient_descent_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+![](06_3_gradient_descent_and_boost_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
 Gradient descent algorithm:
 
@@ -273,7 +273,9 @@ for ( m in 1:iter ) {
 
 # return f_hat
 boost_preds <- f_hat
-predict(lm(y~x), newdata=xnew)
+
+# compare to linear model
+cbind(boost_preds, predict(lm(y~x), newdata=xnew))
 ```
 
 Plot predictions
@@ -287,7 +289,7 @@ g <- data.frame(x, y) |>
 g
 ```
 
-![](06_3_gradient_descent_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
+![](06_3_gradient_descent_and_boost_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
 
 Same as optimal linear regression
 
@@ -297,15 +299,18 @@ g + geom_smooth(method = lm, se = FALSE, col="red", linetype=2)
 
     ## `geom_smooth()` using formula = 'y ~ x'
 
-![](06_3_gradient_descent_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+![](06_3_gradient_descent_and_boost_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
 
 Here’s how the algorithm descended the loss function (MSE)
 
 ``` r
+par(mfrow=c(1,1))
 plot(1:iter, mse, xlab="iteration")
+abline(h=min(mse), col="blue")
+text(0, min(mse), signif(min(mse),2), pos=3) #irreducible error
 ```
 
-![](06_3_gradient_descent_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
+![](06_3_gradient_descent_and_boost_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
 
 This is an animated version of boosted linear regression to visualize
 how the model changes over iterations. Run this code to animate.
@@ -356,7 +361,8 @@ for ( m in 1:iter ) {
 }
 ```
 
-Visualize how the parameters change over iterations
+Visualize how the parameters change over iterations. We see that they
+approach zero as there becomes no more systematic variation to explain.
 
 ``` r
 betas <- data.frame(betas)
