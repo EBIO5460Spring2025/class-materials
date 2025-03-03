@@ -428,3 +428,7 @@ Suggestions:
 **Q4\.** Like other tree ensemble methods we have looked at, `xgboost` can provide information about the relative importance of the different predictor variables. Research how to do this and make a plot that displays this information.
 
 **Q5\.** Plot the prediction both as a presence map and a map of probabilities.
+
+
+
+**Don't forget to use Piazza if you get stuck, to offer tips, share experience etc.**
