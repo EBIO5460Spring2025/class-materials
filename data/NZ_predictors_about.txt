@@ -1,0 +1,49 @@
+Data from:
+
+Valavi et al. (2021). Predictive performance of presence-only species distribution models: a benchmark study with reproducible code. Ecological Monographs 0:e01486. https://doi.org/10.1002/ecm.1486.
+
+Downloaded raster (geotiff) files from Open Science Framework repository associated with the paper:
+https://osf.io/kwc4v/files/
+
+These geotiffs were downsampled by a factor of 20, converted to tidy form, compiled into one dataframe (where each column is one environmental variable), and saved to csv.
+
+# R code used to prepare the NZ environmental data csv
+
+library(dplyr)
+library(raster) #nb retired in 2023. In future, use terra.
+
+# Downsample all the tifs and export tidy dataframes.
+file_names <- list.files("NZ")
+for (f in file_names) {
+    print(f)
+    if ( length(grep("tif", f)) > 0 ) {
+        base_name <- sub(".tif", "", f)
+        if ( base_name == "toxicats") next
+        r <- raster(paste0("NZ/", f))
+        r_agg <- aggregate(r, fact=20)
+        df <- as.data.frame(r_agg, xy=TRUE)
+        write.csv(df, file=paste0("NZDS/", base_name, ".csv"), row.names=F)
+    }
+}
+
+# Read csv files, check all x,y consistent, compile to one dataframe
+file_names <- list.files("NZDS")
+locs <- read.csv("NZDS/age.csv")
+locs <- locs |> select(x,y)
+n <- nrow(locs)
+for (f in file_names) {
+    print(f)
+    this <- read.csv(paste0("NZDS/", f))
+    if ( nrow(this) != n ) stop("rows not equal")
+    diffs_x <- locs$x - this$x
+    if ( sum(diffs_x) != 0 ) stop("all x not equal")
+    diffs_y <- locs$y - this$y
+    if ( sum(diffs_y) != 0 ) stop("all y not equal")
+    locs <- cbind(locs, select(this, last_col()))
+}
+head(locs)
+
+locs <- locs |> 
+    filter(!is.na(age))
+write.csv(locs, file="NZ_predictors.csv", row.names=F)
+
