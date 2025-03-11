@@ -1,12 +1,12 @@
 # CU supercomputer
 
-We have free access to amazing computing resources for machine learning. CU has a supercomputer with NVIDIA 80GB A100 tensor core GPU nodes. These are specialized GPUs for machine learning. These are roughly \$20K each. Each compute node on CUs Alpine supercomputing cluster has three of these, so \$60K worth of compute. You should use them!!
+We have free access to amazing computing resources for machine learning. CU has a supercomputer with NVIDIA 80GB A100 tensor core GPU nodes. These are specialized GPUs for machine learning. These are roughly \$20K each. Each compute node on CU's Alpine supercomputing cluster has three of these, so \$60K worth of compute. You should use them!!
 
 
 
 ## Sign up
 
-Signing up for a Research Computing account only takes a few minutes and you will get approval almost right away. It may ask for a reason. Put "EBIO 5460 Machine Learning for Ecology class, spring 2024". To sign up, go [here](https://www.colorado.edu/rc/) and click "Request an Account". You also need to have set up [Duo 2 factor authentication](https://oit.colorado.edu/services/identity-access-management/duo-multi-factor-authentication#useduo) for your CU Boulder identikey.
+Signing up for a Research Computing account only takes a few minutes and you will get approval almost right away. It may ask for a reason. Put "EBIO 5460 Machine Learning for Ecology class, spring 2025". To sign up, go [here](https://www.colorado.edu/rc/) and click "Request an Account". You also need to have set up [Duo 2 factor authentication](https://oit.colorado.edu/services/identity-access-management/duo-multi-factor-authentication#useduo) for your CU Boulder identikey.
 
 
 
@@ -22,7 +22,7 @@ Instead of using a terminal and typing `ssh` commands, you can also use the open
 
 For university servers you may need to [VPN to the campus network first](https://oit.colorado.edu/services/network-internet-services/vpn).
 
-You will be prompted for username and password. Once you enter your password, it will seem that nothing is happening. You now must open the DUO app on your phone and approve the push notification. Then you'll get a prompt that looks something like this:
+You'll be prompted for username and password. Once you enter your password, it will seem that nothing is happening. You now must open the DUO app on your phone and approve the push notification. Then you'll get a prompt that looks something like this:
 
 ```bash
 You are using login node: login12
