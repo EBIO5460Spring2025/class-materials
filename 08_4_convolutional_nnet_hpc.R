@@ -1,3 +1,15 @@
+# First log in to research computing
+# Transfer to GPU node
+#   sinteractive --partition=atesting_a100 --time=0:60:00 --nodes=1 --ntasks=8 --gres=gpu:1
+# Change to project directory
+#   cd /projects/<username>/ml4e
+# Start conda
+#   module load anaconda
+# Activate conda environment
+#   r-tf2150py3118
+# Start R
+#   R
+
 # Script pared down for use on an HPC resource
 
 # A small hitch is that we can't set a seed for use on GPU, and it's important
