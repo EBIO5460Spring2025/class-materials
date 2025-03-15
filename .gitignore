@@ -6,7 +6,7 @@
 *.Rproj
 *.Rdata
 data_large/
-08_5_transfer_learning_files/saved/modtfr1/
+08_6_transfer_learning_files/saved/modtfr1/
 source/__pycache__/
 
 #########################################################
