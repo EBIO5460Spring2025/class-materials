@@ -143,13 +143,29 @@ $$
 \mathrm{Precision} = \frac{\mathrm{Number \ of \ true \ predicted \ presences}}{\mathrm{Number \ of \ predicted \ presences}} = \frac{216}{742} = 0.29
 $$
 
-The precision is generally for the positive class in a positive vs negative classification task but the principle applies to other classes. The precision of the negative class (ability of a model to focus on true negatives) in the above table would be formed over the other row:
+The complement of the precision is the false discovery rate.
+
+Name: **False discovery rate**
 
 $$
-\mathrm{Negative \ class \ precision} = \frac{\mathrm{Number \ of \ true \ predicted \ absences}}{\mathrm{Number \ of \ predicted \ absences}} = \frac{2872}{2970} = 0.97
+\mathrm{False \ discovery \ rate} = \frac{\mathrm{Number \ of \ false \ predicted \ presences}}{\mathrm{Number \ of \ predicted \ presences}} = \frac{526}{742} = 0.71
 $$
 
+The precision is generally for the positive class in a positive vs negative classification task but the principle applies to other classes. The precision of the negative class (ability of a model to focus on true negatives), usually called the negative predictive value, in the above table would be formed over the other row:
 
+Alternate names: **Negative predictive value**. **Negative class precision**.
+
+$$
+\mathrm{Negative \ predictive \ value} = \frac{\mathrm{Number \ of \ true \ predicted \ absences}}{\mathrm{Number \ of \ predicted \ absences}} = \frac{2872}{2970} = 0.97
+$$
+
+The complement of the negative predictive value is the false omission rate.
+
+Name:  **False omission rate**
+
+$$
+\mathrm{False \ omission \ rate} = \frac{\mathrm{Number \ of \ false \ predicted \ absences}}{\mathrm{Number \ of \ predicted \ absences}} = \frac{98}{2970} = 0.03
+$$
 
 ##### Class imbalance
 
