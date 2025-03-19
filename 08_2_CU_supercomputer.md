@@ -97,7 +97,7 @@ It is generally best to work from your projects directory on RC computing becaus
 cd /projects/jbsmith
 ```
 
-You can the set up directories here for specific projects. For example, let's make a directory for this class, and navigate to it:
+You can then set up directories here for specific projects. For example, let's make a directory for this class, and navigate to it:
 
 ```
 mkdir ml4e
