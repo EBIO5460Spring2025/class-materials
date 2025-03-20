@@ -6,7 +6,7 @@
 # Start conda
 #   module load anaconda
 # Activate conda environment
-#   r-tf2150py3118
+#   conda activate r-tf2150py3118
 # Start R
 #   R
 
