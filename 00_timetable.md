@@ -12,7 +12,7 @@ Below are assignment due dates and a record of the topics we covered each week t
 | 2 (classification, KNN)                             | 13 Feb (Week 5 Thu)      |
 | 3 (decision trees, bagging)                         | 25 Feb (Week 7 Tue)      |
 | 4 (boosting)                                        | 14 Mar (Week 9 Fri)      |
-| 5 (neural networks)                                 | 28 Mar (Week 11 Fri)     |
+| 5 (neural networks)                                 | 25 Apr (Week 13 Fri)     |
 | Individual project presentations (finals week, TBA) | 5 May 1:30-4:00 PM (Mon) |
 | Individual project code or paper                    | TBA (about 9 May)        |
 

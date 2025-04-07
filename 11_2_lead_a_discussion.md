@@ -1,6 +1,6 @@
 # Select a paper to lead a discussion
 
-Due Mon 7 Apr (I'll look on Tue morning)
+Due Wed 9 Apr (I'll look on Thu morning)
 
 **Email me your selection.**
 
