@@ -20,10 +20,14 @@ Below are assignment due dates and a record of the topics we covered each week t
 
 ## Discussions
 
-| Lead | Week | Day  | Date.... | Paper |
-| ---- | ---- | ---- | -------- | ----- |
-| TBA  | TBA  | TBA  | TBA      | TBA   |
-|      |      |      |          |       |
+| Lead | Week | Day  | Date.... | Paper                                                        |
+| ---- | ---- | ---- | -------- | ------------------------------------------------------------ |
+| LF   | 13   | Tue  | 15 Apr   | Wahltinez & Wahltinez (2024). An open-source general purpose machine learning framework for individual animal re-identification using few-shot learning. |
+| AP   | 13   | Tue  | 17 Apr   | Li et al (2020). A global coral reef probability map generated using convolutional neural networks. |
+|      |      | Tue  | 22 Apr   | Meetings about individual projects                           |
+| AD   | 14   | Thu  | 24 Apr   | Kyathanahally et al (2022). Ensembles of data-efficient vision transformers as a new paradigm for automated classification in ecology. |
+| SES  | 15   | Tue  | 29 Apr   | Karpatne (2017). Theory-guided data science: a new paradigm for scientific discovery from data. |
+| MM   | 15   | Thu  | 1 May    | Joseph (2020). Neural hierarchical models of ecological populations. |
 
 
 
