@@ -76,22 +76,29 @@ Please upgrade to the latest version of R or Python. I'll use R Studio, VSCode, 
 #### Texts
 We'll sample from several texts and papers. Most of it is available free to you. If there is any material that can't be posted publicly, I'll post it to the class Google Drive folder.
 
-The main text book that the first eight weeks of the semester will be based around is:
+The main text book for the first eight weeks of the semester is:
 
 * James G, Witten D, Hastie T, Tibshirani R (2021). An Introduction to Statistical Learning: With Applications in R (or Python), Second edition. Springer, New York.
 * [Book website](https://www.statlearning.com/): free download
 
-Other more advanced texts that I personally am referencing extensively include:
+For using keras to model neural networks, I am using:
 
-* Goodfellow I, Bengio Y, Courville A (2016). Deep Learning. The MIT Press, Cambridge, Massachusetts.
+* Chollet F, Kalinowski T, Allaire JJ (2022). Deep Learning with R, Second edition. Manning Publications Co, Shelter Island, NY.
+* [Website](https://www.manning.com/books/deep-learning-with-python-second-edition) and [code](https://github.com/t-kalinowski/deep-learning-with-R-2nd-edition-code/tree/main)
+* Chollet F (2021). Deep Learning with Python, Second edition. Manning Publications Co. LLC, New York.
+
+Other more advanced texts that I am referencing include:
+
 * Hastie T, Tibshirani R, Friedman JH (2009). The Elements of Statistical Learning: Data Mining, Inference, and Prediction, 2nd ed. Springer, New York, NY.
+* Bishop CM, Bishop H (2024). Deep Learning: Foundations and Concepts. Springer, Cham.
+* Goodfellow I, Bengio Y, Courville A (2016). Deep Learning. The MIT Press, Cambridge, Massachusetts.
 
 A text heavily influencing the way I think about the broader topic of data science from an interdisciplinary perspective is:
 
 * Efron B & Hastie T (2016). Computer Age Statistical Inference: Algorithms, Evidence, and Data Science. Cambridge.
 * This text is aimed at masters or first-year PhD students in statistics and data science. After completing this course (and the complementary semester in Part 1), you might find this a useful book with a friendly level of math.
 
-Paperback versions of just about any Springer text can be purchased by University of Colorado students for $25 each. To purchase, do a Chinook search via the CU library (you must be on the campus network or via VPN, not the guest wifi), follow the link to the ebook version, and look for the Springer offer to buy the paperback version. Be aware however that these versions are not in color, which is certainly an issue for interpreting plots!
+Ebook versions of most Springer texts are available for free through the university library. Paperback versions of just about any Springer text can be purchased by University of Colorado students for $25 each. To purchase, do a Chinook search via the CU library (you must be on the campus network or via VPN, not the guest wifi), follow the link to the ebook version, and look for the Springer offer to buy the paperback version. Be aware however that these versions are not in color, which is certainly an issue for interpreting plots!
 
 #### Grading & assessment scheme
 Grading is for completion
