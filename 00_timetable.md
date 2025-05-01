@@ -14,7 +14,7 @@ Below are assignment due dates and a record of the topics we covered each week t
 | 4 (boosting)                                        | 14 Mar (Week 9 Fri)      |
 | 5 (neural networks)                                 | 25 Apr (Week 13 Fri)     |
 | Individual project presentations (finals week, TBA) | 5 May 1:30-4:00 PM (Mon) |
-| Individual project code or paper                    | TBA (about 9 May)        |
+| Individual project code or paper                    | 9 May (Finals week)      |
 
 
 
